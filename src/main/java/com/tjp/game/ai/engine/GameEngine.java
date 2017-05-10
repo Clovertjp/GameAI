@@ -26,8 +26,17 @@ public class GameEngine {
 		isRuing=true;
 	}
 	
+	public void onEnter()
+	{
+		for(GameObjectInter child : childrenList)
+		{
+			child.onEnter();
+		}
+	}
+	
 	public void onUpdate()
 	{
+		onEnter();
 		while(isRuing)
 		{
 			
@@ -37,17 +46,31 @@ public class GameEngine {
 			}
 			
 			try {
-				Thread.sleep(33);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+		onExit();
+	}
+	
+	public void onExit()
+	{
+		for(GameObjectInter child : childrenList)
+		{
+			child.onExit();
 		}
 	}
 	
 	public void gameEnd()
 	{
 		isRuing=false;
+	}
+	
+	public void addChild(GameObjectInter obj)
+	{
+		childrenList.add(obj);
 	}
 
 }

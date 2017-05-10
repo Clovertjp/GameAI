@@ -7,14 +7,14 @@ import com.tjp.game.ai.engine.GameEngine;
 import com.tjp.game.ai.inter.FSMStateInter;
 import com.tjp.game.ai.profile.fsm.UserProfile;
 
-public class EatingAction implements FSMStateInter {
+public class SleepingAction implements FSMStateInter {
 	
-	public static final String ACTION_STR=" eating action ";
+	public static final String ACTION_STR=" sleeping action ";
 	
 	private UserProfile userProfile;
 	private Random random;
 	
-	public EatingAction(UserProfile userProfile)
+	public SleepingAction(UserProfile userProfile)
 	{
 		this.userProfile=userProfile;
 		init();
@@ -35,10 +35,9 @@ public class EatingAction implements FSMStateInter {
 			return ;
 		}
 		
-		userProfile.incHungry(20*random.nextFloat());
-		userProfile.decEnergy(10*random.nextFloat());
+		userProfile.incBlood(20*random.nextFloat());
+		userProfile.decHungry(20*random.nextFloat());
 		System.out.println(userProfile);
-
 		
 		FSMStateInter action=getFSMState();
 		if(action!=null)
@@ -62,26 +61,24 @@ public class EatingAction implements FSMStateInter {
 	public FSMStateInter getFSMState() {
 		// TODO Auto-generated method stub
 		
-		if(userProfile.getHungry()>=Contants.USER_VALUE_MAX)
+		if(userProfile.getBlood()>=Contants.USER_VALUE_MAX)
 		{
-			return userProfile.getBlood()>userProfile.getEnergy() ? new FightingAction(userProfile) : 
-																	new SleepingAction(userProfile) ;
+			return userProfile.getHungry()>userProfile.getEnergy() ? new FightingAction(userProfile) : 
+																	new EatingAction(userProfile) ;
 		}else
 		{
-			if(userProfile.getEnergy()<=10.0f)
+			if(userProfile.getHungry()<=10.0f)
 			{
-				return new FightingAction(userProfile);
+				return new EatingAction(userProfile);
 			}
 		}
 		
 		return null;
 	}
-
+	
 	@Override
 	public String toString() {
 		return ACTION_STR;
 	}
-	
-	
 
 }

@@ -7,14 +7,14 @@ import com.tjp.game.ai.engine.GameEngine;
 import com.tjp.game.ai.inter.FSMStateInter;
 import com.tjp.game.ai.profile.fsm.UserProfile;
 
-public class EatingAction implements FSMStateInter {
+public class FightingAction implements FSMStateInter {
 	
-	public static final String ACTION_STR=" eating action ";
+	public static final String ACTION_STR=" fighting action ";
 	
 	private UserProfile userProfile;
 	private Random random;
 	
-	public EatingAction(UserProfile userProfile)
+	public FightingAction(UserProfile userProfile)
 	{
 		this.userProfile=userProfile;
 		init();
@@ -32,13 +32,13 @@ public class EatingAction implements FSMStateInter {
 		{
 			System.out.println(userProfile+"   is die");
 			GameEngine.getInstance().gameEnd();
-			return ;
+			return;
 		}
 		
-		userProfile.incHungry(20*random.nextFloat());
-		userProfile.decEnergy(10*random.nextFloat());
+		userProfile.incEnergy(10*random.nextFloat());
+		userProfile.decBlood(20*random.nextFloat());
+		userProfile.decHungry(15*random.nextFloat());
 		System.out.println(userProfile);
-
 		
 		FSMStateInter action=getFSMState();
 		if(action!=null)
@@ -56,22 +56,28 @@ public class EatingAction implements FSMStateInter {
 
 	public void init() {
 		// TODO Auto-generated method stub
+
 		random=new Random();
 	}
 
 	public FSMStateInter getFSMState() {
 		// TODO Auto-generated method stub
 		
-		if(userProfile.getHungry()>=Contants.USER_VALUE_MAX)
+		if(userProfile.getEnergy()>=Contants.USER_VALUE_MAX)
 		{
-			return userProfile.getBlood()>userProfile.getEnergy() ? new FightingAction(userProfile) : 
-																	new SleepingAction(userProfile) ;
+			return userProfile.getHungry()>userProfile.getBlood() ? new SleepingAction(userProfile) : 
+																	new EatingAction(userProfile) ;
 		}else
 		{
-			if(userProfile.getEnergy()<=10.0f)
+			if(userProfile.getBlood()<=10.0f)
 			{
-				return new FightingAction(userProfile);
+				return new SleepingAction(userProfile);
 			}
+			if(userProfile.getHungry()<=10.0f)
+			{
+				return new EatingAction(userProfile);
+			}
+			
 		}
 		
 		return null;
@@ -81,7 +87,6 @@ public class EatingAction implements FSMStateInter {
 	public String toString() {
 		return ACTION_STR;
 	}
-	
-	
 
+	
 }
