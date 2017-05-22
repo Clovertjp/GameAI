@@ -4,7 +4,9 @@ import java.util.Random;
 
 import com.tjp.game.ai.config.Contants;
 import com.tjp.game.ai.engine.GameEngine;
-import com.tjp.game.ai.inter.FSMStateInter;
+import com.tjp.game.ai.inter.fsm.FSMStateInter;
+import com.tjp.game.ai.message.fsm.MessageQueue;
+import com.tjp.game.ai.profile.fsm.Message;
 import com.tjp.game.ai.profile.fsm.UserProfile;
 
 public class EatingAction implements FSMStateInter {
@@ -30,8 +32,7 @@ public class EatingAction implements FSMStateInter {
 		
 		if(userProfile.isDie())
 		{
-			System.out.println(userProfile+"   is die");
-			GameEngine.getInstance().gameEnd();
+			MessageQueue.getInstance().addMessage(MessageQueue.dieMessage);
 			return ;
 		}
 		

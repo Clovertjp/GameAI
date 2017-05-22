@@ -2,6 +2,7 @@ package com.tjp.game.ai.engine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 import com.tjp.game.ai.inter.GameObjectInter;
 
@@ -10,6 +11,7 @@ public class GameEngine {
 	private static GameEngine gameEngine=new GameEngine();
 	private volatile boolean isRuing;
 	private List<GameObjectInter> childrenList=new ArrayList<GameObjectInter>();
+	private AtomicLong atomicLong=new AtomicLong(0);
 	
 	private GameEngine()
 	{
@@ -39,7 +41,7 @@ public class GameEngine {
 		onEnter();
 		while(isRuing)
 		{
-			
+			atomicLong.incrementAndGet();
 			for(GameObjectInter child : childrenList)
 			{
 				child.onUpdate();
@@ -71,6 +73,11 @@ public class GameEngine {
 	public void addChild(GameObjectInter obj)
 	{
 		childrenList.add(obj);
+	}
+	
+	public long getFrame()
+	{
+		return atomicLong.get();
 	}
 
 }

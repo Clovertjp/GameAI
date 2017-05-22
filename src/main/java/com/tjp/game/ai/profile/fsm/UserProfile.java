@@ -3,7 +3,7 @@ package com.tjp.game.ai.profile.fsm;
 import com.tjp.game.ai.action.fsm.FightingAction;
 import com.tjp.game.ai.config.Contants;
 import com.tjp.game.ai.engine.GameEngine;
-import com.tjp.game.ai.inter.FSMStateInter;
+import com.tjp.game.ai.inter.fsm.FSMStateInter;
 import com.tjp.game.ai.inter.GameObjectInter;
 
 public class UserProfile implements GameObjectInter {

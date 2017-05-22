@@ -1,4 +1,6 @@
-package com.tjp.game.ai.inter;
+package com.tjp.game.ai.inter.fsm;
+
+import com.tjp.game.ai.inter.GameObjectInter;
 
 public interface FSMStateInter extends GameObjectInter {
 	
