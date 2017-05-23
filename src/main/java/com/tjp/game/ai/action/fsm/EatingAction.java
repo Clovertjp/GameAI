@@ -16,6 +16,11 @@ public class EatingAction implements FSMStateInter {
 	private UserProfile userProfile;
 	private Random random;
 	
+	public EatingAction() {
+		// TODO Auto-generated constructor stub
+		init();
+	}
+	
 	public EatingAction(UserProfile userProfile)
 	{
 		this.userProfile=userProfile;
@@ -50,6 +55,14 @@ public class EatingAction implements FSMStateInter {
 		}
 	}
 
+	public UserProfile getUserProfile() {
+		return userProfile;
+	}
+
+	public void setUserProfile(UserProfile userProfile) {
+		this.userProfile = userProfile;
+	}
+
 	public void onExit() {
 		// TODO Auto-generated method stub
 		System.out.println(ACTION_STR+"  onExit");
@@ -65,13 +78,13 @@ public class EatingAction implements FSMStateInter {
 		
 		if(userProfile.getHungry()>=Contants.USER_VALUE_MAX)
 		{
-			return userProfile.getBlood()>userProfile.getEnergy() ? new FightingAction(userProfile) : 
-																	new SleepingAction(userProfile) ;
+			return userProfile.getBlood()>userProfile.getEnergy() ? userProfile.getActionWithAdd(FightingAction.ACTION_STR) : 
+				userProfile.getActionWithAdd(SleepingAction.ACTION_STR) ;
 		}else
 		{
 			if(userProfile.getEnergy()<=10.0f)
 			{
-				return new FightingAction(userProfile);
+				return userProfile.getActionWithAdd(FightingAction.ACTION_STR);
 			}
 		}
 		

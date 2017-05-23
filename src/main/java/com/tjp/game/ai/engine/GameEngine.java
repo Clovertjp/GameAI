@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.tjp.game.ai.action.fsm.EatingAction;
+import com.tjp.game.ai.action.fsm.FightingAction;
+import com.tjp.game.ai.action.fsm.SleepingAction;
+import com.tjp.game.ai.config.Contants;
 import com.tjp.game.ai.inter.GameObjectInter;
 
 public class GameEngine {
@@ -15,7 +19,14 @@ public class GameEngine {
 	
 	private GameEngine()
 	{
-		
+		init();
+	}
+	
+	public void init()
+	{
+		Contants.registerAction(EatingAction.ACTION_STR, EatingAction.class);
+		Contants.registerAction(FightingAction.ACTION_STR, FightingAction.class);
+		Contants.registerAction(SleepingAction.ACTION_STR, SleepingAction.class);
 	}
 	
 	public static GameEngine getInstance()

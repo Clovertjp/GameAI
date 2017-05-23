@@ -15,11 +15,28 @@ public class SleepingAction implements FSMStateInter {
 	private UserProfile userProfile;
 	private Random random;
 	
+	public SleepingAction() {
+		// TODO Auto-generated constructor stub
+		init();
+	}
+	
 	public SleepingAction(UserProfile userProfile)
 	{
 		this.userProfile=userProfile;
 		init();
 	}
+
+	public UserProfile getUserProfile() {
+		return userProfile;
+	}
+
+
+
+	public void setUserProfile(UserProfile userProfile) {
+		this.userProfile = userProfile;
+	}
+
+
 
 	public void onEnter() {
 		// TODO Auto-generated method stub
@@ -63,13 +80,13 @@ public class SleepingAction implements FSMStateInter {
 		
 		if(userProfile.getBlood()>=Contants.USER_VALUE_MAX)
 		{
-			return userProfile.getHungry()>userProfile.getEnergy() ? new FightingAction(userProfile) : 
-																	new EatingAction(userProfile) ;
+			return userProfile.getHungry()>userProfile.getEnergy() ? userProfile.getActionWithAdd(FightingAction.ACTION_STR) : 
+																	 userProfile.getActionWithAdd(EatingAction.ACTION_STR) ;
 		}else
 		{
 			if(userProfile.getHungry()<=10.0f)
 			{
-				return new EatingAction(userProfile);
+				return userProfile.getActionWithAdd(EatingAction.ACTION_STR);
 			}
 		}
 		

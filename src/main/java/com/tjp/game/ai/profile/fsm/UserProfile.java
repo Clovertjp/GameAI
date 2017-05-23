@@ -1,5 +1,10 @@
 package com.tjp.game.ai.profile.fsm;
 
+import java.awt.datatransfer.StringSelection;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.google.common.base.Strings;
 import com.tjp.game.ai.action.fsm.FightingAction;
 import com.tjp.game.ai.config.Contants;
 import com.tjp.game.ai.engine.GameEngine;
@@ -15,6 +20,8 @@ public class UserProfile implements GameObjectInter {
 	private float hungry;
 	
 	private FSMStateInter action;
+	
+	private Map<String,FSMStateInter> actionMap=new HashMap<String, FSMStateInter>();
 	
 	public UserProfile(String name)
 	{
@@ -189,6 +196,48 @@ public class UserProfile implements GameObjectInter {
 		}
 		return false;
 	}
+
+
+	public FSMStateInter getActionWithAdd(String actionKey) {
+		if(actionMap.containsKey(actionKey))
+		{
+			return actionMap.get(actionKey);
+		}
+		if(!Contants.actionClassControl.containsKey(actionKey))
+		{
+			System.out.println("未注册 "+actionKey);
+			return null;
+		}
+		Class actionClass=Contants.actionClassControl.get(actionKey);
+		FSMStateInter action=null;
+		try {
+			action = (FSMStateInter) actionClass.newInstance();
+			action.setUserProfile(this);
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(action!=null)
+		{
+			setAction(actionKey,action);
+		}
+		return action;
+	}
 	
+	public void setAction(String actionKey,FSMStateInter action)
+	{
+		if(Strings.isNullOrEmpty(actionKey))
+		{
+			return ;
+		}
+		if(action == null)
+		{
+			return ;
+		}
+		actionMap.put(actionKey, action);
+	}
 
 }
